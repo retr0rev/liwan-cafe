@@ -23,7 +23,7 @@ function lookup(obj: any, path: string): string {
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>(() => {
     const stored = localStorage.getItem('lang');
-    return stored === 'ar' || stored === 'en' ? stored : 'en';
+    return stored === 'ar' || stored === 'en' ? stored : 'ar';
   });
 
   useEffect(() => {

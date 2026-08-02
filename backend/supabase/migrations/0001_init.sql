@@ -51,8 +51,8 @@ WHERE NOT EXISTS (SELECT 1 FROM admin);
 
 -- Seed empty settings rows with defaults
 INSERT INTO settings (key, value) VALUES
-  ('restaurant_name_en', ''),
-  ('restaurant_name_ar', ''),
+  ('restaurant_name_ar', 'ليوان'),
+  ('restaurant_name_en', 'Liwan Cafe'),
   ('description_en', ''),
   ('description_ar', ''),
   ('hours_en', ''),
