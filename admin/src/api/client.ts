@@ -59,4 +59,12 @@ export const api = {
   getSettings: () => request<Record<string, string>>('/settings'),
   updateSettings: (body: Record<string, string>) =>
     request('/settings', { method: 'PUT', body: JSON.stringify(body) }),
+  uploadSettingImage: (key: 'logo_url' | 'favicon_url', file: File) => {
+    const fd = new FormData();
+    fd.append('image', file);
+    return request<{ key: string; value: string }>(
+      `/settings/${key === 'logo_url' ? 'logo' : 'favicon'}`,
+      { method: 'POST', body: fd }
+    );
+  },
 };
