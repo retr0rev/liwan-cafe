@@ -50,12 +50,12 @@ export function createApp() {
     })
   );
 
-  // Stricter rate limit on auth endpoints: 10 attempts / 15 min per IP
+  // Stricter rate limit on auth endpoints: 30 attempts / 15 min per IP
   app.use(
     '/api/auth',
     rateLimit({
       windowMs: 15 * 60 * 1000,
-      limit: 10,
+      limit: 30,
       standardHeaders: true,
       legacyHeaders: false,
       message: { error: 'Too many login attempts, please try again later.' },

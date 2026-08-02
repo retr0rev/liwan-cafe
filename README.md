@@ -119,7 +119,7 @@ VITE_API_URL=/api        # use full backend URL in production
 ## Security
 
 - **Helmet** security headers on all responses
-- **Rate limiting**: 100 req/15min globally, 10 req/15min on auth endpoints (per IP)
+- **Rate limiting**: 100 req/15min globally, 30 req/15min on auth endpoints (per IP; counters reset on server restart)
 - **CORS allowlist** via `ALLOWED_ORIGINS` (empty = same-origin/localhost only)
 - **10kb JSON body limit**
 - **bcrypt** password hashing, **JWT** with 7-day expiry
