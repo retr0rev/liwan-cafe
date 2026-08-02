@@ -1,6 +1,8 @@
-# Liwan — Restaurant Digital Menu System
+# ليوان · Liwan Cafe — Restaurant Digital Menu System
 
-A production-ready, multilingual (Arabic/English) restaurant digital menu system. Mobile-first public menu + desktop-first admin dashboard — served from a **single URL** (`/` for the menu, `/admin` for the dashboard).
+A production-ready, multilingual (Arabic/English) restaurant digital menu system. Mobile-first public menu + desktop-first admin dashboard — served from a **single URL** (`/` for the menu, `/admin` for the dashboard). Arabic is the default language.
+
+> **Repo**: [LeonardoJS11/Liwan-Cafe](https://github.com/LeonardoJS11/Liwan-Cafe)
 
 ## Tech Stack
 
