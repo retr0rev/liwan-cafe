@@ -1,0 +1,45 @@
+import { useEffect, useState } from 'react';
+import { useI18n } from '../i18n/I18nContext';
+import { LogoPlaceholder } from './LogoPlaceholder';
+
+export function Nav({ onMenuClick }: { onMenuClick: () => void }) {
+  const { lang, setLang, t } = useI18n();
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const ids = ['menu', 'about'];
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <header className="sticky top-0 z-50 bg-cream/90 backdrop-blur border-b border-green/10">
+      <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+        <LogoPlaceholder />
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+            className="rounded-full px-3 py-2 text-sm font-semibold text-green transition active:scale-95"
+          >
+            {lang === 'ar' ? 'EN' : 'عربي'}
+          </button>
+          <button
+            onClick={onMenuClick}
+            className="rounded-full px-3 py-2 text-sm font-semibold text-green transition active:scale-95"
+          >
+            {t('nav.menu')}
+          </button>
+        </div>
+      </nav>
+    </header>
+  );
+}
