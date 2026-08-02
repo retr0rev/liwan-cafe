@@ -41,20 +41,20 @@ export const api = {
     request<{ items: any[]; categories: any[] }>('/stats/recent'),
   getCategories: () => request<any[]>('/categories'),
   createCategory: (body: any) =>
-    request('/categories', { method: 'POST', body: JSON.stringify(body) }),
+    request<any>('/categories', { method: 'POST', body: JSON.stringify(body) }),
   updateCategory: (id: number, body: any) =>
-    request(`/categories/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteCategory: (id: number) => request(`/categories/${id}`, { method: 'DELETE' }),
+    request<any>(`/categories/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteCategory: (id: number) => request<any>(`/categories/${id}`, { method: 'DELETE' }),
   getItems: () => request<any[]>('/items'),
   createItem: (body: any) =>
-    request('/items', { method: 'POST', body: JSON.stringify(body) }),
+    request<any>('/items', { method: 'POST', body: JSON.stringify(body) }),
   updateItem: (id: number, body: any) =>
-    request(`/items/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
-  deleteItem: (id: number) => request(`/items/${id}`, { method: 'DELETE' }),
+    request<any>(`/items/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteItem: (id: number) => request<any>(`/items/${id}`, { method: 'DELETE' }),
   uploadItemImage: (id: number, file: File) => {
     const fd = new FormData();
     fd.append('image', file);
-    return request(`/items/${id}/image`, { method: 'POST', body: fd });
+    return request<any>(`/items/${id}/image`, { method: 'POST', body: fd });
   },
   getSettings: () => request<Record<string, string>>('/settings'),
   updateSettings: (body: Record<string, string>) =>
