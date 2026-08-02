@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { createScene } from './ParticlesScene';
 
 const isLowEnd = () =>
   typeof navigator === 'undefined' ||
@@ -19,8 +18,20 @@ export function ThreeBackground() {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    let dispose: (() => void) | undefined;
+    let cancelled = false;
+
     if (isLowEnd() || !webglSupported() || !ref.current) return;
-    return createScene(ref.current);
+
+    import('./ParticlesScene').then(({ createScene }) => {
+      if (cancelled || !ref.current) return;
+      dispose = createScene(ref.current);
+    });
+
+    return () => {
+      cancelled = true;
+      dispose?.();
+    };
   }, []);
 
   return (
