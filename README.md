@@ -1,13 +1,14 @@
 # Liwan — Restaurant Digital Menu System
 
-A production-ready, multilingual (Arabic/English) restaurant digital menu system. Mobile-first public menu + desktop-first admin dashboard.
+A production-ready, multilingual (Arabic/English) restaurant digital menu system. Mobile-first public menu + desktop-first admin dashboard — served from a **single URL** (`/` for the menu, `/admin` for the dashboard).
 
 ## Tech Stack
 
 - **Frontend**: React, Vite, TanStack Router, TypeScript, TailwindCSS, Anime.js, Three.js
-- **Admin**: React, Vite, TypeScript, TailwindCSS
+- **Admin**: Same app, routed at `/admin` (React, TypeScript, TailwindCSS)
 - **Backend**: Express.js, TypeScript, Supabase (PostgreSQL + Storage), JWT, bcrypt
-- **Deployment**: Vercel (all three apps), Supabase
+- **Security**: Helmet, express-rate-limit, CORS allowlist, input validation
+- **Deployment**: Vercel (frontend + backend), Supabase
 
 ## Project Structure
 
@@ -17,8 +18,12 @@ liwan/
 │   ├── api/    # Vercel entry
 │   ├── src/    # routes, middleware, db client
 │   └── supabase/migrations/  # SQL schema
-├── frontend/   # Public menu (mobile-first)
-├── admin/      # Admin dashboard (desktop-first)
+├── frontend/   # Single app: public menu (/) + admin (/admin)
+│   └── src/
+│       ├── components/  # Public menu components
+│       ├── admin/       # Admin dashboard (pages, auth, ui)
+│       ├── routes/      # TanStack Router routes
+│       └── i18n/        # Arabic/English
 └── shared/     # Shared TypeScript types
 ```
 
@@ -42,7 +47,6 @@ npm install
 ```bash
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env.local
-cp admin/.env.example admin/.env.local
 ```
 
 3. Run the database migration (`backend/supabase/migrations/0001_init.sql`) in the Supabase SQL Editor. This creates the tables, seeds empty settings, and creates the default admin account:
@@ -56,8 +60,12 @@ cp admin/.env.example admin/.env.local
 
 ```bash
 npm run dev:backend   # API on :3001
-npm run dev:frontend  # Menu on :5173
-npm run dev:admin     # Admin on :5174
+npm run dev:frontend  # Menu + Admin on :5173 (proxies /api → :3001)
+```
+
+Open:
+- Public menu: **http://localhost:5173/**
+- Admin dashboard: **http://localhost:5173/admin**
 ```
 
 ## Environment Variables
@@ -70,18 +78,13 @@ SUPABASE_SERVICE_ROLE_KEY=  # service_role key (server-side, never in frontend)
 SUPABASE_ANON_KEY=       # anon key
 JWT_SECRET=change-me     # long random string
 SUPABASE_BUCKET=menu-images
+ALLOWED_ORIGINS=http://localhost:5173  # comma-separated frontend origins
 ```
 
 ### frontend/.env.local
 
 ```
 VITE_API_URL=/api        # use full backend URL in production
-```
-
-### admin/.env.local
-
-```
-VITE_API_URL=https://your-backend.vercel.app
 ```
 
 ## Deployment (Vercel + Supabase)
@@ -97,26 +100,30 @@ VITE_API_URL=https://your-backend.vercel.app
 
 1. Import the repo into Vercel
 2. Set the **Root Directory** to `backend`
-3. Build command: `npm run build` (or leave default), Output: `api/index.ts` (Framework Preset: **Other**)
+3. Framework Preset: **Other**, Output: `api/index.ts`
 4. Add environment variables from `backend/.env`
 
-### 3. Frontend → Vercel
+### 3. Frontend → Vercel (single app: menu + admin)
 
 1. Import the repo, set **Root Directory** to `frontend`
 2. Framework Preset: **Vite**
 3. Add env var `VITE_API_URL` = your backend's Vercel URL
+4. Ensure a rewrite serves `index.html` for `/admin*` (Vite preset handles SPA fallback)
 
-### 4. Admin → Vercel
+### 4. Post-deploy
 
-1. Import the repo, set **Root Directory** to `admin`
-2. Framework Preset: **Vite**
-3. Add env var `VITE_API_URL` = your backend's Vercel URL
-
-### 5. Post-deploy
-
-1. Open the admin dashboard, sign in with `admin` / `admin123`
+1. Open **`/admin`**, sign in with `admin` / `admin123`
 2. **Change the password immediately** (Security tab)
 3. Fill in restaurant settings, add categories and menu items
+
+## Security
+
+- **Helmet** security headers on all responses
+- **Rate limiting**: 100 req/15min globally, 10 req/15min on auth endpoints (per IP)
+- **CORS allowlist** via `ALLOWED_ORIGINS` (empty = same-origin/localhost only)
+- **10kb JSON body limit**
+- **bcrypt** password hashing, **JWT** with 7-day expiry
+- **Input validation** on auth endpoints (type + length checks)
 
 ## API Endpoints
 

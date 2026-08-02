@@ -8,8 +8,12 @@ export const authRouter = Router();
 
 authRouter.post('/login', async (req, res, next) => {
   const { username, password } = req.body || {};
-  if (!username || !password) {
+  if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
     res.status(400).json({ error: 'Username and password required' });
+    return;
+  }
+  if (username.length > 64 || password.length > 128) {
+    res.status(400).json({ error: 'Invalid credentials' });
     return;
   }
 
@@ -42,12 +46,21 @@ authRouter.post('/login', async (req, res, next) => {
 
 authRouter.put('/password', requireAuth, async (req, res, next) => {
   const { currentPassword, newPassword } = req.body || {};
-  if (!currentPassword || !newPassword) {
+  if (
+    typeof currentPassword !== 'string' ||
+    typeof newPassword !== 'string' ||
+    !currentPassword ||
+    !newPassword
+  ) {
     res.status(400).json({ error: 'All fields required' });
     return;
   }
   if (newPassword.length < 6) {
     res.status(400).json({ error: 'New password must be at least 6 characters' });
+    return;
+  }
+  if (newPassword.length > 128) {
+    res.status(400).json({ error: 'New password is too long' });
     return;
   }
 

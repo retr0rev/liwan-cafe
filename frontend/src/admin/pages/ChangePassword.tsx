@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { api } from '../api/client';
+import { api } from '../../api/client';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 

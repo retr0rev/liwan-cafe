@@ -1,17 +1,24 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
-import { api, setToken, getToken } from '../api/client';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { api, setToken, getToken } from '../../api/client';
 
 interface AuthValue {
   user: { id: number; username: string } | null;
   login: (u: string, p: string) => Promise<void>;
   logout: () => void;
-  isAuthed: () => boolean;
 }
 
 const AuthContext = createContext<AuthValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<{ id: number; username: string } | null>(null);
+
+  useEffect(() => {
+    if (getToken() && !user) {
+      // Derive a minimal user from the token presence; the backend
+      // re-validates on every request.
+      setUser({ id: 0, username: 'admin' });
+    }
+  }, [user]);
 
   const login = async (u: string, p: string) => {
     const res = await api.login(u, p);
@@ -24,12 +31,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
-  const isAuthed = () => !!getToken();
-
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthed }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>
   );
 }
 

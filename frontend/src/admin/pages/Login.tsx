@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { useAuth } from '../auth/AuthContext';
 
 export function Login() {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -11,7 +13,7 @@ export function Login() {
     e.preventDefault();
     try {
       await login(username, password);
-      window.location.hash = '#/';
+      navigate({ to: '/admin/dashboard' });
     } catch (err) {
       setError(String(err));
     }
@@ -19,10 +21,7 @@ export function Login() {
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
-      <form
-        onSubmit={submit}
-        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow"
-      >
+      <form onSubmit={submit} className="w-full max-w-sm rounded-2xl bg-white p-6 shadow">
         <h1 className="mb-1 text-2xl font-bold text-green">Liwan Admin</h1>
         <p className="mb-4 text-sm text-chocolate/60">Sign in to manage your restaurant</p>
         <input

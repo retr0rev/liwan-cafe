@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react';
+import { Link } from '@tanstack/react-router';
 import { useAuth } from '../auth/AuthContext';
 
 const links = [
-  { hash: '#/', label: 'Dashboard' },
-  { hash: '#/categories', label: 'Categories' },
-  { hash: '#/items', label: 'Items' },
-  { hash: '#/settings', label: 'Settings' },
-  { hash: '#/password', label: 'Security' },
+  { to: '/admin/dashboard', label: 'Dashboard' },
+  { to: '/admin/categories', label: 'Categories' },
+  { to: '/admin/items', label: 'Items' },
+  { to: '/admin/settings', label: 'Settings' },
+  { to: '/admin/password', label: 'Security' },
 ];
 
 export function AdminLayout({ children }: { children: ReactNode }) {
@@ -17,13 +18,14 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         <h1 className="mb-6 text-lg font-bold text-green">Liwan Admin</h1>
         <nav className="flex flex-col gap-1">
           {links.map((l) => (
-            <a
-              key={l.hash}
-              href={l.hash}
+            <Link
+              key={l.to}
+              to={l.to}
               className="rounded-lg px-3 py-2 text-sm text-chocolate hover:bg-green/5"
+              activeProps={{ className: 'bg-green/10 font-semibold' }}
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="mt-auto pt-6">
