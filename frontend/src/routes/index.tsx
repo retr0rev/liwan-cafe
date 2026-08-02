@@ -1,5 +1,9 @@
 import { createRoute } from '@tanstack/react-router';
 import { rootRoute } from './__root';
+import { Layout } from '../components/Layout';
+import { Hero } from '../components/Hero';
+import { MenuSection } from '../components/MenuSection';
+import { About } from '../components/About';
 
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -9,8 +13,14 @@ export const indexRoute = createRoute({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center">
-      <p className="text-green font-semibold">Liwan</p>
-    </div>
+    <Layout>
+      <Hero
+        onBrowse={() =>
+          document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' })
+        }
+      />
+      <MenuSection activeCategory={0} />
+      <About />
+    </Layout>
   );
 }
