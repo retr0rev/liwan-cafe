@@ -1,4 +1,4 @@
-import { createApp } from '../src/index.js';
+import { createApp } from '../src/index.ts';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const app = createApp();
