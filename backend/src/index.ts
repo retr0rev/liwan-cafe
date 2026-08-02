@@ -3,6 +3,8 @@ import cors from 'cors';
 import { authRouter } from './routes/auth.js';
 import { categoriesRouter } from './routes/categories.js';
 import { itemsRouter } from './routes/items.js';
+import { settingsRouter } from './routes/settings.js';
+import { statsRouter } from './routes/stats.js';
 import { errorHandler } from './middleware/error.js';
 
 export function createApp() {
@@ -17,6 +19,8 @@ export function createApp() {
   app.use('/api/auth', authRouter);
   app.use('/api/categories', categoriesRouter);
   app.use('/api/items', itemsRouter);
+  app.use('/api/settings', settingsRouter);
+  app.use('/api/stats', statsRouter);
   app.use(errorHandler);
 
   return app;
