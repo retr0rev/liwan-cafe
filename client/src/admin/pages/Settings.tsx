@@ -6,8 +6,10 @@ import { Input } from '../components/ui/Input';
 const FIELDS: { key: string; label: string }[] = [
   { key: 'restaurant_name_ar', label: 'اسم المطعم (عربي)' },
   { key: 'restaurant_name_en', label: 'اسم المطعم (إنجليزي)' },
-  { key: 'description_ar', label: 'الوصف (عربي)' },
-  { key: 'description_en', label: 'الوصف (إنجليزي)' },
+  { key: 'hero_tagline_ar', label: 'جملة الهيرو (عربي) - تظهر في الأعلى' },
+  { key: 'hero_tagline_en', label: 'جملة الهيرو (إنجليزي)' },
+  { key: 'about_ar', label: 'من نحن (عربي) - يظهر تحت من نحن' },
+  { key: 'about_en', label: 'من نحن (إنجليزي)' },
   { key: 'hours_ar', label: 'ساعات العمل (عربي)' },
   { key: 'hours_en', label: 'ساعات العمل (إنجليزي)' },
   { key: 'phone', label: 'الهاتف' },

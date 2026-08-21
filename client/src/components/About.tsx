@@ -4,7 +4,7 @@ import { useMenuData } from '../hooks/useMenuData';
 export function About() {
   const { lang, t } = useI18n();
   const { settings } = useMenuData();
-  const desc = lang === 'ar' ? settings.description_ar : settings.description_en;
+  const desc = lang === 'ar' ? (settings.about_ar || settings.description_ar) : (settings.about_en || settings.description_en);
   const hours = lang === 'ar' ? settings.hours_ar : settings.hours_en;
   const address = lang === 'ar' ? settings.address_ar : settings.address_en;
 

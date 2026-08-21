@@ -11,7 +11,7 @@ export function Hero({ onBrowse }: { onBrowse: () => void }) {
   useReveal(ref);
 
   const name = lang === 'ar' ? settings.restaurant_name_ar : settings.restaurant_name_en;
-  const desc = lang === 'ar' ? settings.description_ar : settings.description_en;
+  const desc = lang === 'ar' ? (settings.hero_tagline_ar || settings.description_ar) : (settings.hero_tagline_en || settings.description_en);
 
   return (
     <section
