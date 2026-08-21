@@ -37,9 +37,11 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
     if (open && drawerRef.current && overlayRef.current) {
       anime({ targets: overlayRef.current, opacity: [0, 1], duration: 220, easing: 'easeOutQuad' });
       anime({ targets: drawerRef.current, translateX: [isRTL ? '-100%' : '100%', '0%'], duration: 380, easing: 'easeOutCubic' });
-      anime({ targets: '.cart-item', opacity: [0, 1], translateY: [10, 0], delay: anime.stagger(50, { start: 120 }), duration: 320, easing: 'easeOutQuad' });
     }
-  }, [open, items.length, isRTL]);
+  }, [open, isRTL]);
+  useEffect(() => {
+    if (open) anime({ targets: '.cart-item', opacity: [0, 1], translateY: [10, 0], delay: anime.stagger(50, { start: 80 }), duration: 300, easing: 'easeOutQuad' });
+  }, [open, items.length]);
 
   if (!open) return null;
   return (
