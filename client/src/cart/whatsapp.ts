@@ -1,6 +1,6 @@
 export function formatPrice(price: number, lang: string) {
-  const n = Number(price).toLocaleString(lang === 'ar' ? 'ar-EG' : 'en-US');
-  return lang === 'ar' ? `${n} ل.س` : `${n} S.P`;
+  const n = Number(price).toLocaleString('en-US');
+  return lang === 'ar' ? `${n}\u00A0ل.س` : `${n} S.P`;
 }
 
 export function buildWhatsAppMessage(

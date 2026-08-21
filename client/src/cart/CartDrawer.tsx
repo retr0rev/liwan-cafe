@@ -62,7 +62,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                     {it.image_url ? <img src={it.image_url} alt={name} className="h-14 w-14 rounded-lg object-cover" /> : <div className="h-14 w-14 rounded-lg bg-emerald/10" />}
                     <div className="flex-1">
                       <p className="font-semibold text-ink text-sm">{name}</p>
-                      <p className="text-sm text-gold font-bold">{formatPrice(Number(it.price), lang)}</p>
+                      <p dir="ltr" className="text-sm text-gold font-bold whitespace-nowrap tabular-nums">{formatPrice(Number(it.price), lang)}</p>
                       <div className="mt-1 flex items-center gap-2">
                         <button onClick={() => setQty(it.id, it.qty - 1)} className="rounded-full border border-gold/20 px-2">−</button>
                         <span className="text-sm font-semibold">{it.qty}</span>
@@ -79,7 +79,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
         {items.length > 0 && (
           <div className="border-t border-gold/15 p-4 space-y-3">
             <div className="flex justify-between font-bold text-emerald">
-              <span>{t('cart.total')}</span><span>{formatPrice(subtotal, lang)}</span>
+              <span>{t('cart.total')}</span><span dir="ltr" className="whitespace-nowrap tabular-nums">{formatPrice(subtotal, lang)}</span>
             </div>
             <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t('cart.notesPlaceholder')} className="w-full rounded-xl border border-gold/20 p-3 text-sm bg-white" rows={2} />
             {!waNumber && <p className="text-xs text-amber-700">{t('cart.missingNumber')}</p>}

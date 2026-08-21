@@ -35,7 +35,7 @@ export function ItemCard({ item, index }: { item: MenuItem; index: number }) {
       <div className="flex-1">
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-semibold text-ink">{name}</h3>
-          <span className="font-bold text-gold whitespace-nowrap">{formatPrice(Number(item.price), lang)}</span>
+          <span dir="ltr" className="font-bold text-gold whitespace-nowrap tabular-nums">{formatPrice(Number(item.price), lang)}</span>
         </div>
         {desc && <p className="mt-1 text-sm text-ink/60 line-clamp-2">{desc}</p>}
         <div className="mt-2 flex flex-wrap gap-1.5">
