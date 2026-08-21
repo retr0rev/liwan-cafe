@@ -54,7 +54,8 @@ liwan/
 - Palette: emerald `#0f2e26` (primary), gold `#c9a86a` (accent), cream `#fdf8ef` (bg), cream-dark `#f5ecd7`, chocolate `#2b1e14` (text), muted `#6b5a45`. Tailwind tokens `emerald`, `gold`, `cream`, `ink`.
 - Typography: Headlines Cormorant Garamond (EN) + Amiri (AR), Body Inter (EN) + Tajawal (AR). Loaded via Google Fonts with `display=swap`. RTL font stack switched via `[dir='rtl']`.
 - Shape: `rounded-2xl` cards, `rounded-full` pills, soft shadows `shadow-[0_8px_30px_rgba(15,46,38,0.08)]`, gold hairline borders.
-- Hero: logo, name from settings, tagline, CTAs (Browse Menu scroll, WhatsApp Location link), subtle Three.js particles (gold/emerald, very low density).
+- Logo: source `liwan_logo.jpg` (provided) → copied to `frontend/public/logo.jpg` + `frontend/public/favicon.jpg`, also used as `logoPlaceholder` fallback when settings `logo_url` empty. Nav/Hero/Footer use settings `logo_url` else `/logo.jpg`.
+- Hero: logo image, name from settings, tagline, CTAs (Browse Menu scroll, WhatsApp Location link), subtle Three.js particles (gold/emerald, very low density).
 - No hardcoding: hero text, popular items, menu, about, location, social all from API.
 
 ## Public Site (mobile-first) — Section Spec
@@ -99,8 +100,11 @@ liwan/
 - Anime.js: hero entrance, card stagger on scroll (useReveal), tab switch, drawer slide. Three.js particles lazy-loaded, disabled if `hardwareConcurrency < 4` or `saveData`.
 - Images via Supabase Storage public bucket `menu-images`, lazy loading, 4:3.
 
+## Assets
+- `liwan_logo.jpg` at repo root is the canonical logo; build copies it to `frontend/public/` for serving.
+
 ## Testing Strategy
-- Manual: seed admin login, create category → item → appears in menu & popular, cart add/remove/qty, WhatsApp link encodes correctly, RTL toggle, empty states.
+- Manual: seed admin login, create category → item → appears in menu & popular, cart add/remove/qty, WhatsApp link encodes correctly, RTL toggle, empty states, logo renders in nav/hero.
 - API: curl for auth, categories, items, settings, image upload.
 - Build: `npm run build` for frontend+backend must pass; `tsc --noEmit`.
 
