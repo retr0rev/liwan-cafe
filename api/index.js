@@ -74,8 +74,15 @@ module.exports = async function handler(req, res) {
 
     if (u === '/api/categories' && m === 'GET') {
       const user = auth(req.headers.authorization)
-      const q = s.from('categories').select('*').order('display_order')
-      const { data, error } = user ? await q : await s.from('categories').select('*').eq('is_active', true).order('display_order')
+      let data, error
+      try {
+        const res1 = user ? await s.from('categories').select('*').order('display_order') : await s.from('categories').select('*').eq('is_active', true).order('display_order')
+        data = res1.data; error = res1.error
+        if (error && error.message.includes('display_order')) throw error
+      } catch (e) {
+        const res2 = user ? await s.from('categories').select('*').order('id') : await s.from('categories').select('*').eq('is_active', true).order('id')
+        data = res2.data; error = res2.error
+      }
       if (error) return res.status(500).json({ error: error.message })
       return res.json(data || [])
     }
@@ -84,7 +91,16 @@ module.exports = async function handler(req, res) {
       if (!auth(req.headers.authorization)) return res.status(401).json({ error: 'Unauthorized' })
       const { name_ar, name_en, display_order, is_active } = req.body || {}
       if (!name_ar || !name_en) return res.status(400).json({ error: 'Required' })
-      const { data, error } = await s.from('categories').insert({ name_ar, name_en, display_order: display_order ?? 0, is_active: is_active !== false }).select().single()
+      let data, error
+      const payload = { name_ar, name_en, is_active: is_active !== false }
+      try {
+        const r = await s.from('categories').insert({ ...payload, display_order: display_order ?? 0 }).select().single()
+        data = r.data; error = r.error
+        if (error && error.message.includes('display_order')) throw error
+      } catch (e) {
+        const r = await s.from('categories').insert(payload).select().single()
+        data = r.data; error = r.error
+      }
       if (error) return res.status(500).json({ error: error.message })
       return res.status(201).json(data)
     }
