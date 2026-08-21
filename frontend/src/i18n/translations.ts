@@ -12,6 +12,7 @@ export const translations = {
       follow: 'Follow Us',
     },
     footer: { rights: 'All rights reserved.' },
+    cart: { title: 'Cart', empty: 'Your cart is empty', total: 'Total', add: 'Add to cart', remove: 'Remove', checkout: 'Order via WhatsApp', notesPlaceholder: 'Name, address, notes…', missingNumber: 'WhatsApp not configured yet' },
   },
   ar: {
     nav: { menu: 'القائمة', about: 'من نحن', location: 'الموقع' },
@@ -26,6 +27,7 @@ export const translations = {
       follow: 'تابعنا',
     },
     footer: { rights: 'جميع الحقوق محفوظة.' },
+    cart: { title: 'السلة', empty: 'سلتك فارغة', total: 'المجموع', add: 'أضف للسلة', remove: 'حذف', checkout: 'اطلب عبر واتساب', notesPlaceholder: 'الاسم، العنوان، ملاحظات…', missingNumber: 'رقم واتساب غير مضبوط بعد' },
   },
 } as const;
 

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useI18n } from '../i18n/I18nContext';
 import { LogoPlaceholder } from './LogoPlaceholder';
+import { useCart } from '../cart/CartContext';
 
-export function Nav({ onMenuClick }: { onMenuClick: () => void }) {
+export function Nav({ onMenuClick, onCartClick }: { onMenuClick: () => void; onCartClick: () => void }) {
   const { lang, setLang, t } = useI18n();
+  const { count } = useCart();
   const [active, setActive] = useState('');
 
   useEffect(() => {
@@ -37,6 +39,9 @@ export function Nav({ onMenuClick }: { onMenuClick: () => void }) {
             className="rounded-full px-3 py-2 text-sm font-semibold text-emerald transition active:scale-95"
           >
             {t('nav.menu')}
+          </button>
+          <button onClick={onCartClick} className="relative rounded-full bg-emerald px-4 py-2 text-sm font-bold text-cream">
+            🛒 {count > 0 && <span className="absolute -end-1 -top-1 rounded-full bg-gold px-1.5 text-xs text-ink">{count}</span>}
           </button>
         </div>
       </nav>
