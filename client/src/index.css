@@ -3,8 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-html { scroll-behavior: smooth; }
-body { @apply bg-cream text-ink antialiased; }
+html { scroll-behavior: smooth; touch-action: manipulation; -webkit-text-size-adjust: 100%; }
+body { @apply bg-cream text-ink antialiased; touch-action: manipulation; }
+* { touch-action: manipulation; }
+input, textarea, select { font-size: 16px !important; }
 h1, h2, h3 { @apply font-display; }
 [dir='rtl'] { font-family: 'Amiri','Tajawal',system-ui,sans-serif; }
 [dir='rtl'] h1, [dir='rtl'] h2, [dir='rtl'] h3 { font-family: 'Amiri',serif; }
