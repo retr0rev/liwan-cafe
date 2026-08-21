@@ -100,57 +100,65 @@ export function Items() {
         <Button onClick={() => setEditing({})}>إضافة صنف</Button>
       </div>
 
-      <Table headers={['الاسم', 'الفئة', 'السعر', 'الحالة', 'علامات', 'إجراءات']}>
+      <div className="hidden lg:block">
+        <Table headers={['الاسم', 'الفئة', 'السعر', 'الحالة', 'علامات', 'إجراءات']}>
+          {items.map((i) => (
+            <tr key={i.id} className="border-b border-gold/5">
+              <td className="px-4 py-3">
+                <div className="flex items-center gap-2">
+                  {i.image_url && <img src={i.image_url} className="h-8 w-8 rounded object-cover" alt="" />}
+                  {i.name_ar || i.name_en}
+                </div>
+              </td>
+              <td className="px-4 py-3">{cats.find((c) => c.id === i.category_id)?.name_ar || catName(i.category_id)}</td>
+              <td className="px-4 py-3 whitespace-nowrap" dir="ltr">{Number(i.price).toLocaleString('en-US')} ل.س</td>
+              <td className="px-4 py-3">
+                <button onClick={() => toggleAvailable(i)} className={`rounded-full px-3 py-1 text-xs font-semibold ${i.is_available ? 'bg-emerald/15 text-emerald' : 'bg-red-100 text-red-600'}`}>{i.is_available ? 'متوفر' : 'غير متوفر'}</button>
+              </td>
+              <td className="px-4 py-3">
+                <div className="flex flex-wrap gap-1">
+                  {(['is_popular', 'is_new', 'is_vegetarian', 'is_spicy'] as const).map((f) => (
+                    <button key={f} onClick={() => toggleFlag(i, f)} className={`rounded-full px-2 py-0.5 text-xs font-semibold ${i[f] ? 'bg-ink/15 text-ink' : 'bg-emerald/5 text-ink/40'}`}>{f.replace('is_', '')}</button>
+                  ))}
+                </div>
+              </td>
+              <td className="px-4 py-3">
+                <div className="flex gap-1">
+                  <button onClick={() => setEditing(i)} className="rounded px-2 text-emerald hover:bg-emerald/5">تعديل</button>
+                  <button onClick={() => setDeleting(i)} className="rounded px-2 text-red-600 hover:bg-red-50">حذف</button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </Table>
+      </div>
+
+      <div className="grid gap-3 lg:hidden">
+        {items.length === 0 && <p className="py-8 text-center text-sm text-ink/50">لا يوجد أصناف</p>}
         {items.map((i) => (
-          <tr key={i.id} className="border-b border-gold/5">
-            <td className="px-4 py-3">
-              <div className="flex items-center gap-2">
-                {i.image_url && (
-                  <img src={i.image_url} className="h-8 w-8 rounded object-cover" alt="" />
-                )}
-                {i.name_en}
+          <div key={i.id} className="rounded-2xl bg-white p-4 shadow-sm border border-gold/10">
+            <div className="flex gap-3">
+              {i.image_url ? <img src={i.image_url} alt="" className="h-16 w-16 rounded-xl object-cover shrink-0" /> : <div className="h-16 w-16 rounded-xl bg-emerald/10 shrink-0" />}
+              <div className="min-w-0 flex-1">
+                <p className="font-bold text-ink leading-tight">{i.name_ar || i.name_en}</p>
+                <p className="text-xs text-ink/60 truncate">{i.name_en}</p>
+                <p className="mt-1 text-xs text-ink/50">{cats.find((c) => c.id === i.category_id)?.name_ar || catName(i.category_id)} • <span dir="ltr" className="whitespace-nowrap">{Number(i.price).toLocaleString('en-US')} ل.س</span></p>
               </div>
-            </td>
-            <td className="px-4 py-3">{catName(i.category_id)}</td>
-            <td className="px-4 py-3">${Number(i.price).toFixed(2)}</td>
-            <td className="px-4 py-3">
-              <button
-                onClick={() => toggleAvailable(i)}
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                  i.is_available ? 'bg-emerald/15 text-emerald' : 'bg-red-100 text-red-600'
-                }`}
-              >
-                {i.is_available ? 'متوفر' : 'غير متوفر'}
-              </button>
-            </td>
-            <td className="px-4 py-3">
-              <div className="flex flex-wrap gap-1">
-                {(['is_popular', 'is_new', 'is_vegetarian', 'is_spicy'] as const).map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => toggleFlag(i, f)}
-                    className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                      i[f] ? 'bg-chocolate/15 text-ink' : 'bg-emerald/5 text-ink/40'
-                    }`}
-                  >
-                    {f.replace('is_', '')}
-                  </button>
-                ))}
-              </div>
-            </td>
-            <td className="px-4 py-3">
-              <div className="flex gap-1">
-                <button onClick={() => setEditing(i)} className="rounded px-2 text-emerald hover:bg-emerald/5">
-                  تعديل
-                </button>
-                <button onClick={() => setDeleting(i)} className="rounded px-2 text-red-600 hover:bg-red-50">
-                  حذف
-                </button>
-              </div>
-            </td>
-          </tr>
+              <span className={`h-fit rounded-full px-2 py-1 text-xs font-bold ${i.is_available ? 'bg-emerald/10 text-emerald' : 'bg-red-100 text-red-600'}`}>{i.is_available ? 'متوفر' : 'مخفي'}</span>
+            </div>
+            {i.description_ar && <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-ink/60">{i.description_ar}</p>}
+            <div className="mt-3 flex flex-wrap gap-1">
+              {(['is_popular', 'is_new', 'is_vegetarian', 'is_spicy'] as const).map((f) => (
+                <button key={f} onClick={() => toggleFlag(i, f)} className={`rounded-full px-2.5 py-1 text-xs font-semibold border ${i[f] ? 'bg-gold/15 text-ink border-gold/20' : 'bg-white text-ink/40 border-gold/10'}`}>{f.replace('is_', '')}</button>
+              ))}
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <button onClick={() => setEditing(i)} className="rounded-full bg-emerald py-2.5 text-sm font-bold text-cream">تعديل</button>
+              <button onClick={() => setDeleting(i)} className="rounded-full bg-red-50 py-2.5 text-sm font-bold text-red-600">حذف</button>
+            </div>
+          </div>
         ))}
-      </Table>
+      </div>
 
       <Modal open={!!editing} onClose={() => setEditing(null)} title={editing?.id ? 'تعديل الصنف' : 'صنف جديد'}>
         <div className="space-y-3">

@@ -67,50 +67,55 @@ export function Categories() {
         <Button onClick={() => setEditing({})}>إضافة فئة</Button>
       </div>
 
-      <Table headers={['EN', 'AR', 'الترتيب', 'نشط', 'إجراءات']}>
+      <div className="hidden lg:block">
+        <Table headers={['EN', 'AR', 'الترتيب', 'نشط', 'إجراءات']}>
+          {cats.map((c) => (
+            <tr key={c.id} className="border-b border-gold/5">
+              <td className="px-4 py-3">{c.name_en}</td>
+              <td className="px-4 py-3">{c.name_ar}</td>
+              <td className="px-4 py-3">{c.display_order}</td>
+              <td className="px-4 py-3">
+                <button onClick={() => toggle(c)} className={`rounded-full px-3 py-1 text-xs font-semibold ${c.is_active ? 'bg-emerald/15 text-emerald' : 'bg-red-100 text-red-600'}`}>
+                  {c.is_active ? 'نشط' : 'معطل'}
+                </button>
+              </td>
+              <td className="px-4 py-3">
+                <div className="flex gap-1">
+                  <button onClick={() => move(c, -1)} className="rounded px-2 text-ink/60 hover:bg-emerald/5">↑</button>
+                  <button onClick={() => move(c, 1)} className="rounded px-2 text-ink/60 hover:bg-emerald/5">↓</button>
+                  <button onClick={() => setEditing(c)} className="rounded px-2 text-emerald hover:bg-emerald/5">تعديل</button>
+                  <button onClick={() => setDeleting(c)} className="rounded px-2 text-red-600 hover:bg-red-50">حذف</button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </Table>
+      </div>
+
+      <div className="grid gap-3 lg:hidden">
+        {cats.length === 0 && <p className="py-8 text-center text-sm text-ink/50">لا يوجد فئات</p>}
         {cats.map((c) => (
-          <tr key={c.id} className="border-b border-gold/5">
-            <td className="px-4 py-3">{c.name_en}</td>
-            <td className="px-4 py-3">{c.name_ar}</td>
-            <td className="px-4 py-3">{c.display_order}</td>
-            <td className="px-4 py-3">
-              <button
-                onClick={() => toggle(c)}
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                  c.is_active ? 'bg-emerald/15 text-emerald' : 'bg-red-100 text-red-600'
-                }`}
-              >
-                {c.is_active ? 'نشط' : 'معطل'}
-              </button>
-            </td>
-            <td className="px-4 py-3">
-              <div className="flex gap-1">
-                <button
-                  onClick={() => move(c, -1)}
-                  className="rounded px-2 text-ink/60 hover:bg-emerald/5"
-                >
-                  ↑
-                </button>
-                <button
-                  onClick={() => move(c, 1)}
-                  className="rounded px-2 text-ink/60 hover:bg-emerald/5"
-                >
-                  ↓
-                </button>
-                <button
-                  onClick={() => setEditing(c)}
-                  className="rounded px-2 text-emerald hover:bg-emerald/5"
-                >
-                  تعديل
-                </button>
-                <button onClick={() => setDeleting(c)} className="rounded px-2 text-red-600 hover:bg-red-50">
-                  حذف
-                </button>
+          <div key={c.id} className="rounded-2xl bg-white p-4 shadow-sm border border-gold/10">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <p className="font-bold text-ink">{c.name_ar}</p>
+                <p className="text-sm text-ink/60">{c.name_en}</p>
               </div>
-            </td>
-          </tr>
+              <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${c.is_active ? 'bg-emerald/10 text-emerald' : 'bg-red-100 text-red-600'}`}>{c.is_active ? 'نشط' : 'معطل'}</span>
+            </div>
+            <p className="mt-2 text-xs text-ink/50">الترتيب: {c.display_order}</p>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              <button onClick={() => setEditing(c)} className="flex-1 rounded-full bg-emerald py-2 text-sm font-bold text-cream">تعديل</button>
+              <button onClick={() => setDeleting(c)} className="flex-1 rounded-full bg-red-50 py-2 text-sm font-bold text-red-600">حذف</button>
+            </div>
+            <div className="mt-2 flex justify-center gap-1">
+              <button onClick={() => move(c, -1)} className="rounded-full border border-gold/20 px-3 py-1 text-xs">↑ للأعلى</button>
+              <button onClick={() => move(c, 1)} className="rounded-full border border-gold/20 px-3 py-1 text-xs">↓ للأسفل</button>
+              <button onClick={() => toggle(c)} className="rounded-full border border-gold/20 px-3 py-1 text-xs">{c.is_active ? 'تعطيل' : 'تفعيل'}</button>
+            </div>
+          </div>
         ))}
-      </Table>
+      </div>
 
       <Modal open={!!editing} onClose={() => setEditing(null)} title={editing?.id ? 'تعديل الفئة' : 'فئة جديدة'}>
         <div className="space-y-3">
