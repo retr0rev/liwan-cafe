@@ -65,6 +65,13 @@ settingsRouter.put('/', requireAuth, async (req, res, next) => {
   try {
     const updates = req.body || {};
     for (const [key, value] of Object.entries(updates)) {
+      if (key === 'whatsapp_number' && value) {
+        const digits = String(value).replace(/\D/g, '');
+        if (digits.length < 8 || digits.length > 15) {
+          res.status(400).json({ error: 'Invalid whatsapp_number' });
+          return;
+        }
+      }
       await getSupabase()
         .from('settings')
         .upsert({ key, value: String(value) }, { onConflict: 'key' });

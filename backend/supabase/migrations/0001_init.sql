@@ -44,10 +44,12 @@ CREATE TABLE IF NOT EXISTS admin (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Default admin (password: admin123 - CHANGE AFTER FIRST LOGIN)
+-- Default admin (password: Admin123## - CHANGE AFTER FIRST LOGIN)
 INSERT INTO admin (username, password_hash)
-SELECT 'admin', '$2a$10$Gu8MkkqCjMBmEHKpfwJbAeeLfqcTvkvVRu/Uh38ixME8JsShNeWke'
+SELECT 'admin', '$2b$10$YqWUv4wXW5pmRKoPlETxhusgHLgIWDz1d/lYq26KAKZvdxSGN22IO'
 WHERE NOT EXISTS (SELECT 1 FROM admin);
+-- Ensure existing admin password is updated to Admin123##
+UPDATE admin SET password_hash='$2b$10$YqWUv4wXW5pmRKoPlETxhusgHLgIWDz1d/lYq26KAKZvdxSGN22IO' WHERE username='admin' AND password_hash != '$2b$10$YqWUv4wXW5pmRKoPlETxhusgHLgIWDz1d/lYq26KAKZvdxSGN22IO';
 
 -- Seed empty settings rows with defaults
 INSERT INTO settings (key, value) VALUES
@@ -67,5 +69,6 @@ INSERT INTO settings (key, value) VALUES
   ('address_ar', ''),
   ('footer_text', ''),
   ('logo_url', ''),
-  ('favicon_url', '')
+  ('favicon_url', ''),
+  ('whatsapp_number', '')
 ON CONFLICT (key) DO NOTHING;
