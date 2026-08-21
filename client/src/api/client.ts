@@ -24,6 +24,10 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     const body = await res.json().catch(() => ({}));
     throw new Error((body as any).error || `Request failed: ${res.status}`);
   }
+  if ((options.method === 'POST' || options.method === 'PUT' || options.method === 'DELETE') && (path.startsWith('/categories') || path.startsWith('/items') || path.startsWith('/settings'))) {
+    try { localStorage.setItem('liwan_update', String(Date.now())); new BroadcastChannel('liwan_update').postMessage('update'); } catch {}
+  }
+  if (res.status === 204) return undefined as T;
   return res.json() as Promise<T>;
 }
 
