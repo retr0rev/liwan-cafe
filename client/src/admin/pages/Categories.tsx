@@ -15,6 +15,8 @@ interface Cat {
 
 export function Categories() {
   const [cats, setCats] = useState<Cat[]>([]);
+  const [q, setQ] = useState('');
+  const filtered = cats.filter((c) => !q || c.name_ar.includes(q) || c.name_en.toLowerCase().includes(q.toLowerCase()));
   const [editing, setEditing] = useState<Partial<Cat> | null>(null);
   const [deleting, setDeleting] = useState<Cat | null>(null);
 
@@ -62,14 +64,15 @@ export function Categories() {
 
   return (
     <div dir="rtl">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold text-emerald">الفئات</h1>
         <Button onClick={() => setEditing({})}>إضافة فئة</Button>
       </div>
+      <Input placeholder="بحث عن فئة..." value={q} onChange={(e) => setQ(e.target.value)} />
 
-      <div className="hidden lg:block">
+      <div className="hidden lg:block mt-4">
         <Table headers={['EN', 'AR', 'الترتيب', 'نشط', 'إجراءات']}>
-          {cats.map((c) => (
+          {filtered.map((c) => (
             <tr key={c.id} className="border-b border-gold/5">
               <td className="px-4 py-3">{c.name_en}</td>
               <td className="px-4 py-3">{c.name_ar}</td>
@@ -92,9 +95,9 @@ export function Categories() {
         </Table>
       </div>
 
-      <div className="grid gap-3 lg:hidden">
-        {cats.length === 0 && <p className="py-8 text-center text-sm text-ink/50">لا يوجد فئات</p>}
-        {cats.map((c) => (
+      <div className="grid gap-3 lg:hidden mt-4">
+        {filtered.length === 0 && <p className="py-8 text-center text-sm text-ink/50">لا يوجد فئات</p>}
+        {filtered.map((c) => (
           <div key={c.id} className="rounded-2xl bg-white p-4 shadow-sm border border-gold/10">
             <div className="flex items-start justify-between gap-2">
               <div>
