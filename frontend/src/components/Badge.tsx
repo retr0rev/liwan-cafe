@@ -1,8 +1,8 @@
 const styles: Record<string, string> = {
-  new: 'bg-green/15 text-green',
-  popular: 'bg-chocolate/15 text-chocolate',
+  new: 'bg-emerald/10 text-emerald border border-emerald/20',
+  popular: 'bg-gold/15 text-gold border border-gold/30',
   spicy: 'bg-red-100 text-red-700',
-  vegetarian: 'bg-green-100 text-green-700',
+  vegetarian: 'bg-emerald/10 text-emerald',
 };
 
 export function Badge({ type, children }: { type: string; children: string }) {

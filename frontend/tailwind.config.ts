@@ -5,12 +5,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        green: { DEFAULT: '#1a3c34', light: '#2d5a4e' },
-        chocolate: { DEFAULT: '#3d2b1f', light: '#5a4231' },
-        cream: { DEFAULT: '#f5e6d3', light: '#faf3e9' },
+        emerald: { DEFAULT: '#0f2e26', light: '#1a4338', muted: '#143a2f' },
+        gold: { DEFAULT: '#c9a86a', light: '#ddc08a', muted: '#b89a5a' },
+        cream: { DEFAULT: '#fdf8ef', dark: '#f5ecd7', muted: '#faf3e9' },
+        ink: { DEFAULT: '#2b1e14', light: '#6b5a45' },
+        green: { DEFAULT: '#0f2e26', light: '#1a4338' },
+        chocolate: { DEFAULT: '#2b1e14', light: '#6b5a45' },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Cormorant Garamond', 'Amiri', 'serif'],
+        sans: ['Inter', 'Tajawal', 'system-ui', 'sans-serif'],
       },
     },
   },

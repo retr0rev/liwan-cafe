@@ -14,14 +14,14 @@ export function CategoryTabs({
     el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   return (
-    <div className="sticky top-14 z-30 -mx-4 overflow-x-auto px-4 py-2 bg-cream/90 backdrop-blur">
+    <div className="sticky top-14 z-30 -mx-4 overflow-x-auto px-4 py-2 bg-cream/90 backdrop-blur border-b border-gold/10">
       <div className="flex gap-2 whitespace-nowrap">
         {categories.map((c) => (
           <button
             key={c.id}
             onClick={() => scrollTo(c.id)}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-              active === c.id ? 'bg-green text-cream' : 'bg-white/70 text-chocolate'
+              active === c.id ? 'bg-emerald text-cream shadow-sm' : 'bg-white/70 text-ink border border-gold/20'
             }`}
           >
             {lang === 'ar' ? c.name_ar : c.name_en}

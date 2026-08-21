@@ -22,19 +22,19 @@ export function Nav({ onMenuClick }: { onMenuClick: () => void }) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-cream/90 backdrop-blur border-b border-green/10">
+    <header className="sticky top-0 z-50 bg-cream/90 backdrop-blur border-b border-gold/15">
       <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <LogoPlaceholder />
         <div className="flex items-center gap-2">
           <button
             onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
-            className="rounded-full px-3 py-2 text-sm font-semibold text-green transition active:scale-95"
+            className="rounded-full px-3 py-2 text-sm font-semibold text-emerald transition active:scale-95"
           >
             {lang === 'ar' ? 'EN' : 'عربي'}
           </button>
           <button
             onClick={onMenuClick}
-            className="rounded-full px-3 py-2 text-sm font-semibold text-green transition active:scale-95"
+            className="rounded-full px-3 py-2 text-sm font-semibold text-emerald transition active:scale-95"
           >
             {t('nav.menu')}
           </button>

@@ -6,7 +6,7 @@ export function Footer() {
   const { settings } = useMenuData();
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-green/10 px-4 py-6 text-center text-sm text-chocolate/60">
+    <footer className="border-t border-gold/15 bg-cream-dark/30 px-4 py-6 text-center text-sm text-ink/60">
       <p>
         {settings.footer_text} {year} {t('footer.rights')}
       </p>
