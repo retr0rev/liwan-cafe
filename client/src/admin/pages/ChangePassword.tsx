@@ -28,7 +28,7 @@ export function ChangePassword() {
 
   return (
     <div className="max-w-sm">
-      <h1 className="mb-6 text-2xl font-bold text-green">Change Password</h1>
+      <h1 className="mb-6 text-2xl font-bold text-emerald">Change Password</h1>
       <form onSubmit={submit} className="space-y-3 rounded-2xl bg-white p-6 shadow-sm">
         <Input
           type="password"
@@ -49,7 +49,7 @@ export function ChangePassword() {
           onChange={(e) => setConfirm(e.target.value)}
         />
         {msg && (
-          <p className={`text-sm ${msg.ok ? 'text-green' : 'text-red-600'}`}>{msg.text}</p>
+          <p className={`text-sm ${msg.ok ? 'text-emerald' : 'text-red-600'}`}>{msg.text}</p>
         )}
         <Button type="submit">Update Password</Button>
       </form>

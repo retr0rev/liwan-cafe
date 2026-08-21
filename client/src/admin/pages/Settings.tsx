@@ -50,32 +50,32 @@ export function Settings() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="mb-6 text-2xl font-bold text-green">Restaurant Settings</h1>
+      <h1 className="mb-6 text-2xl font-bold text-emerald">Restaurant Settings</h1>
       <div className="space-y-3 rounded-2xl bg-white p-6 shadow-sm">
         <div className="grid gap-6 sm:grid-cols-2">
           {IMAGES.map((img) => (
             <div key={img.key}>
-              <label className="mb-1 block text-sm font-medium text-chocolate/70">
+              <label className="mb-1 block text-sm font-medium text-ink/70">
                 {img.label}
               </label>
               {values[img.key] ? (
                 <img src={values[img.key]} alt={img.label} className="mb-2 h-16 w-16 rounded object-contain" />
               ) : (
-                <div className="mb-2 h-16 w-16 rounded-xl border-2 border-dashed border-green/40 bg-green/10" />
+                <div className="mb-2 h-16 w-16 rounded-xl border-2 border-dashed border-gold/40 bg-emerald/10" />
               )}
               <input
                 type="file"
                 accept="image/*"
                 onChange={(e) => uploadImage(img.key, e.target.files?.[0])}
-                className="block text-sm text-chocolate/60"
+                className="block text-sm text-ink/60"
               />
             </div>
           ))}
         </div>
-        <div className="border-t border-green/10 pt-4" />
+        <div className="border-t border-gold/10 pt-4" />
         {FIELDS.map((f) => (
           <div key={f.key}>
-            <label className="mb-1 block text-sm font-medium text-chocolate/70">
+            <label className="mb-1 block text-sm font-medium text-ink/70">
               {f.label}
             </label>
             <Input
@@ -86,7 +86,7 @@ export function Settings() {
         ))}
         <div className="flex items-center gap-3">
           <Button onClick={save}>Save Settings</Button>
-          {saved && <span className="text-sm text-green">Saved</span>}
+          {saved && <span className="text-sm text-emerald">Saved</span>}
         </div>
       </div>
     </div>

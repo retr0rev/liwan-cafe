@@ -95,13 +95,13 @@ export function Items() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-green">Menu Items</h1>
+        <h1 className="text-2xl font-bold text-emerald">Menu Items</h1>
         <Button onClick={() => setEditing({})}>Add Item</Button>
       </div>
 
       <Table headers={['Name', 'Category', 'Price', 'Status', 'Flags', 'Actions']}>
         {items.map((i) => (
-          <tr key={i.id} className="border-b border-green/5">
+          <tr key={i.id} className="border-b border-gold/5">
             <td className="px-4 py-3">
               <div className="flex items-center gap-2">
                 {i.image_url && (
@@ -116,7 +116,7 @@ export function Items() {
               <button
                 onClick={() => toggleAvailable(i)}
                 className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                  i.is_available ? 'bg-green/15 text-green' : 'bg-red-100 text-red-600'
+                  i.is_available ? 'bg-emerald/15 text-emerald' : 'bg-red-100 text-red-600'
                 }`}
               >
                 {i.is_available ? 'Available' : 'Unavailable'}
@@ -129,7 +129,7 @@ export function Items() {
                     key={f}
                     onClick={() => toggleFlag(i, f)}
                     className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                      i[f] ? 'bg-chocolate/15 text-chocolate' : 'bg-green/5 text-chocolate/40'
+                      i[f] ? 'bg-chocolate/15 text-ink' : 'bg-emerald/5 text-ink/40'
                     }`}
                   >
                     {f.replace('is_', '')}
@@ -139,7 +139,7 @@ export function Items() {
             </td>
             <td className="px-4 py-3">
               <div className="flex gap-1">
-                <button onClick={() => setEditing(i)} className="rounded px-2 text-green hover:bg-green/5">
+                <button onClick={() => setEditing(i)} className="rounded px-2 text-emerald hover:bg-emerald/5">
                   Edit
                 </button>
                 <button onClick={() => setDeleting(i)} className="rounded px-2 text-red-600 hover:bg-red-50">
@@ -160,7 +160,7 @@ export function Items() {
           <select
             value={editing?.category_id || ''}
             onChange={(e) => setEditing({ ...editing, category_id: Number(e.target.value) })}
-            className="w-full rounded-lg border border-green/15 bg-white px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-gold/15 bg-white px-3 py-2 text-sm"
           >
             <option value="">Category</option>
             {cats.map((c) => (
@@ -231,7 +231,7 @@ export function Items() {
       </Modal>
 
       <Modal open={!!deleting} onClose={() => setDeleting(null)} title="Delete Item">
-        <p className="mb-4 text-sm text-chocolate/80">Delete "{deleting?.name_en}"?</p>
+        <p className="mb-4 text-sm text-ink/80">Delete "{deleting?.name_en}"?</p>
         <Button variant="danger" onClick={remove}>
           Delete
         </Button>

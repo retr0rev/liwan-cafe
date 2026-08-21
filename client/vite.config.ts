@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@liwan/shared': resolve(__dirname, '../shared/src'),
+      '@liwan/shared': resolve(__dirname, '../shared/src/types.ts'),
     },
   },
   server: {

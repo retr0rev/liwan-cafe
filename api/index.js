@@ -34,10 +34,15 @@ async function init() {
 }
 
 module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  if (req.method === 'OPTIONS') return res.status(200).end()
   try {
     const m = req.method
     const u = (req.url || '').split('?')[0]
     const s = getSupabase()
+    if (!process.env.SUPABASE_URL) return res.status(500).json({ error: 'SUPABASE_URL not set' })
 
     if (u === '/api/health') return res.json({ ok: true })
 
@@ -68,15 +73,19 @@ module.exports = async function handler(req, res) {
     }
 
     if (u === '/api/categories' && m === 'GET') {
-      const { data } = await s.from('categories').select('*').eq('is_active', true).order('display_order')
+      const user = auth(req.headers.authorization)
+      const q = s.from('categories').select('*').order('display_order')
+      const { data, error } = user ? await q : await s.from('categories').select('*').eq('is_active', true).order('display_order')
+      if (error) return res.status(500).json({ error: error.message })
       return res.json(data || [])
     }
 
     if (u === '/api/categories' && m === 'POST') {
       if (!auth(req.headers.authorization)) return res.status(401).json({ error: 'Unauthorized' })
-      const { name_ar, name_en } = req.body || {}
+      const { name_ar, name_en, display_order, is_active } = req.body || {}
       if (!name_ar || !name_en) return res.status(400).json({ error: 'Required' })
-      const { data } = await s.from('categories').insert({ name_ar, name_en }).select().single()
+      const { data, error } = await s.from('categories').insert({ name_ar, name_en, display_order: display_order ?? 0, is_active: is_active !== false }).select().single()
+      if (error) return res.status(500).json({ error: error.message })
       return res.status(201).json(data)
     }
 
@@ -103,7 +112,11 @@ module.exports = async function handler(req, res) {
     }
 
     if (u === '/api/items' && m === 'GET') {
-      const { data } = await s.from('menu_items').select('*').eq('is_available', true).order('display_order')
+      const user = auth(req.headers.authorization)
+      const { data, error } = user
+        ? await s.from('menu_items').select('*').order('display_order')
+        : await s.from('menu_items').select('*').eq('is_available', true).order('display_order')
+      if (error) return res.status(500).json({ error: error.message })
       return res.json(data || [])
     }
 

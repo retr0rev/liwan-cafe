@@ -63,13 +63,13 @@ export function Categories() {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-green">Categories</h1>
+        <h1 className="text-2xl font-bold text-emerald">Categories</h1>
         <Button onClick={() => setEditing({})}>Add Category</Button>
       </div>
 
       <Table headers={['EN', 'AR', 'Order', 'Active', 'Actions']}>
         {cats.map((c) => (
-          <tr key={c.id} className="border-b border-green/5">
+          <tr key={c.id} className="border-b border-gold/5">
             <td className="px-4 py-3">{c.name_en}</td>
             <td className="px-4 py-3">{c.name_ar}</td>
             <td className="px-4 py-3">{c.display_order}</td>
@@ -77,7 +77,7 @@ export function Categories() {
               <button
                 onClick={() => toggle(c)}
                 className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                  c.is_active ? 'bg-green/15 text-green' : 'bg-red-100 text-red-600'
+                  c.is_active ? 'bg-emerald/15 text-emerald' : 'bg-red-100 text-red-600'
                 }`}
               >
                 {c.is_active ? 'Active' : 'Disabled'}
@@ -87,19 +87,19 @@ export function Categories() {
               <div className="flex gap-1">
                 <button
                   onClick={() => move(c, -1)}
-                  className="rounded px-2 text-chocolate/60 hover:bg-green/5"
+                  className="rounded px-2 text-ink/60 hover:bg-emerald/5"
                 >
                   ↑
                 </button>
                 <button
                   onClick={() => move(c, 1)}
-                  className="rounded px-2 text-chocolate/60 hover:bg-green/5"
+                  className="rounded px-2 text-ink/60 hover:bg-emerald/5"
                 >
                   ↓
                 </button>
                 <button
                   onClick={() => setEditing(c)}
-                  className="rounded px-2 text-green hover:bg-green/5"
+                  className="rounded px-2 text-emerald hover:bg-emerald/5"
                 >
                   Edit
                 </button>
@@ -156,7 +156,7 @@ export function Categories() {
         onClose={() => setDeleting(null)}
         title="Delete Category"
       >
-        <p className="mb-4 text-sm text-chocolate/80">
+        <p className="mb-4 text-sm text-ink/80">
           Delete "{deleting?.name_en}"? All items in it will be removed.
         </p>
         <Button variant="danger" onClick={remove}>
