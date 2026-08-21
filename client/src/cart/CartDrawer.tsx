@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import anime from 'animejs';
 import { useI18n } from '../i18n/I18nContext';
 import { useCart } from './CartContext';
 import { buildWhatsAppMessage, waLink, formatPrice } from './whatsapp';
@@ -19,11 +20,21 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
     onClose();
   };
 
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (open && drawerRef.current && overlayRef.current) {
+      anime({ targets: overlayRef.current, opacity: [0, 1], duration: 250, easing: 'easeOutQuad' });
+      anime({ targets: drawerRef.current, translateX: ['100%', '0%'], duration: 400, easing: 'easeOutCubic' });
+      anime({ targets: '.cart-item', opacity: [0, 1], translateY: [12, 0], delay: anime.stagger(60, { start: 150 }), duration: 400, easing: 'easeOutCubic' });
+    }
+  }, [open, items.length]);
+
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex">
-      <div className="flex-1 bg-black/30" onClick={onClose} />
-      <div className="flex w-full max-w-sm flex-col bg-cream shadow-2xl">
+      <div ref={overlayRef} className="flex-1 bg-black/30 opacity-0" onClick={onClose} />
+      <div ref={drawerRef} className="flex w-full max-w-sm flex-col bg-cream shadow-2xl">
         <div className="flex items-center justify-between border-b border-gold/15 p-4">
           <h2 className="font-display text-xl font-bold text-emerald">{t('cart.title')}</h2>
           <button onClick={onClose} className="rounded-full bg-emerald/10 px-3 py-1 text-emerald">✕</button>
@@ -36,7 +47,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
               {items.map((it) => {
                 const name = lang === 'ar' ? it.name_ar : it.name_en;
                 return (
-                  <div key={it.id} className="flex gap-3 rounded-xl bg-white p-3 shadow-sm border border-gold/10">
+                  <div key={it.id} className="cart-item flex gap-3 rounded-xl bg-white p-3 shadow-sm border border-gold/10">
                     {it.image_url ? <img src={it.image_url} alt={name} className="h-14 w-14 rounded-lg object-cover" /> : <div className="h-14 w-14 rounded-lg bg-emerald/10" />}
                     <div className="flex-1">
                       <p className="font-semibold text-ink text-sm">{name}</p>
