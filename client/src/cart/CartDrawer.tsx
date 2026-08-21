@@ -24,6 +24,16 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
   const overlayRef = useRef<HTMLDivElement>(null);
   const isRTL = lang === 'ar';
   useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; document.documentElement.style.overflow = ''; };
+  }, [open]);
+  useEffect(() => {
     if (open && drawerRef.current && overlayRef.current) {
       anime({ targets: overlayRef.current, opacity: [0, 1], duration: 220, easing: 'easeOutQuad' });
       anime({ targets: drawerRef.current, translateX: [isRTL ? '-100%' : '100%', '0%'], duration: 380, easing: 'easeOutCubic' });
@@ -35,7 +45,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
   return (
     <div className={`fixed inset-0 z-50 flex ${isRTL ? 'flex-row-reverse' : ''}`}>
       <div ref={overlayRef} className="flex-1 bg-black/30 opacity-0" onClick={onClose} />
-      <div ref={drawerRef} className="flex w-full max-w-sm flex-col bg-cream shadow-2xl" style={{ transform: `translateX(${isRTL ? '-100%' : '100%'})` }}>
+      <div ref={drawerRef} className="flex h-[100dvh] w-full flex-col bg-cream shadow-2xl sm:max-w-sm" style={{ transform: `translateX(${isRTL ? '-100%' : '100%'})` }}>
         <div className="flex items-center justify-between border-b border-gold/15 p-4">
           <h2 className="font-display text-xl font-bold text-emerald">{t('cart.title')}</h2>
           <button onClick={onClose} className="rounded-full bg-emerald/10 px-3 py-1 text-emerald">✕</button>
