@@ -59,20 +59,25 @@ export const api = {
   updateItem: (id: number, body: any) =>
     request<any>(`/items/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
   deleteItem: (id: number) => request<any>(`/items/${id}`, { method: 'DELETE' }),
-  uploadItemImage: (id: number, file: File) => {
-    const fd = new FormData();
-    fd.append('image', file);
-    return request<any>(`/items/${id}/image`, { method: 'POST', body: fd });
+  uploadItemImage: async (id: number, file: File) => {
+    const b64 = await new Promise<string>((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res((r.result as string).split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+    return request<any>(`/items/${id}/image`, { method: 'POST', body: JSON.stringify({ image_base64: b64, filename: file.name, mimetype: file.type }) });
   },
   // Admin - settings
   updateSettings: (body: Record<string, string>) =>
     request('/settings', { method: 'PUT', body: JSON.stringify(body) }),
-  uploadSettingImage: (key: 'logo_url' | 'favicon_url', file: File) => {
-    const fd = new FormData();
-    fd.append('image', file);
-    return request<{ key: string; value: string }>(
-      `/settings/${key === 'logo_url' ? 'logo' : 'favicon'}`,
-      { method: 'POST', body: fd }
-    );
+  uploadSettingImage: async (key: 'logo_url' | 'favicon_url', file: File) => {
+    const b64 = await new Promise<string>((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res((r.result as string).split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+    return request<{ key: string; value: string }>(`/settings/${key === 'logo_url' ? 'logo' : 'favicon'}`, { method: 'POST', body: JSON.stringify({ image_base64: b64, filename: file.name, mimetype: file.type }) });
   },
 };

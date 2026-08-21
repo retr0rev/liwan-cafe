@@ -198,12 +198,51 @@ module.exports = async function handler(req, res) {
       return res.json(results)
     }
 
+    if (u.match(/^\/api\/items\/\d+\/image$/) && m === 'POST') {
+      if (!auth(req.headers.authorization)) return res.status(401).json({ error: 'Unauthorized' })
+      const id = Number(u.split('/')[3])
+      const { image_base64, filename, mimetype } = req.body || {}
+      if (!image_base64) return res.status(400).json({ error: 'No image' })
+      const buf = Buffer.from(image_base64, 'base64')
+      if (buf.length > 5 * 1024 * 1024) return res.status(400).json({ error: 'Too large' })
+      const ext = (filename || 'jpg').split('.').pop() || 'jpg'
+      const path = `items/${id}-${Date.now()}.${ext}`
+      const { error } = await s.storage.from(BUCKET).upload(path, buf, { contentType: mimetype || 'image/jpeg', upsert: true })
+      if (error) return res.status(500).json({ error: error.message })
+      const { data: urlData } = s.storage.from(BUCKET).getPublicUrl(path)
+      const image_url = urlData.publicUrl
+      const { data } = await s.from('menu_items').update({ image_url }).eq('id', id).select().single()
+      return res.json(data)
+    }
+
+    if (u.match(/^\/api\/settings\/(logo|favicon)$/) && m === 'POST') {
+      if (!auth(req.headers.authorization)) return res.status(401).json({ error: 'Unauthorized' })
+      const key = u.includes('logo') ? 'logo_url' : 'favicon_url'
+      const { image_base64, filename, mimetype } = req.body || {}
+      if (!image_base64) return res.status(400).json({ error: 'No image' })
+      const buf = Buffer.from(image_base64, 'base64')
+      const ext = (filename || 'png').split('.').pop() || 'png'
+      const path = `settings/${key}-${Date.now()}.${ext}`
+      const { error } = await s.storage.from(BUCKET).upload(path, buf, { contentType: mimetype || 'image/png', upsert: true })
+      if (error) return res.status(500).json({ error: error.message })
+      const { data: urlData } = s.storage.from(BUCKET).getPublicUrl(path)
+      await s.from('settings').upsert({ key, value: urlData.publicUrl }, { onConflict: 'key' })
+      return res.json({ key, value: urlData.publicUrl })
+    }
+
     if (u === '/api/stats' && m === 'GET') {
       if (!auth(req.headers.authorization)) return res.status(401).json({ error: 'Unauthorized' })
       const { count: catCount } = await s.from('categories').select('*', { count: 'exact', head: true })
       const { count: itemCount } = await s.from('menu_items').select('*', { count: 'exact', head: true })
       const { count: popCount } = await s.from('menu_items').select('*', { count: 'exact', head: true }).eq('is_popular', true)
       return res.json({ categories: catCount || 0, items: itemCount || 0, popular: popCount || 0 })
+    }
+
+    if (u === '/api/stats/recent' && m === 'GET') {
+      if (!auth(req.headers.authorization)) return res.status(401).json({ error: 'Unauthorized' })
+      const { data: items } = await s.from('menu_items').select('id, name_en, updated_at').order('updated_at', { ascending: false }).limit(5)
+      const { data: categories } = await s.from('categories').select('id, name_en, updated_at').order('updated_at', { ascending: false }).limit(5)
+      return res.json({ items: items || [], categories: categories || [] })
     }
 
     return res.status(404).json({ error: 'Not found' })
