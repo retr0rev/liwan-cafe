@@ -61,13 +61,13 @@ export function Categories() {
   };
 
   return (
-    <div>
+    <div dir="rtl">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-emerald">Categories</h1>
-        <Button onClick={() => setEditing({})}>Add Category</Button>
+        <h1 className="text-2xl font-bold text-emerald">الفئات</h1>
+        <Button onClick={() => setEditing({})}>إضافة فئة</Button>
       </div>
 
-      <Table headers={['EN', 'AR', 'Order', 'Active', 'Actions']}>
+      <Table headers={['EN', 'AR', 'الترتيب', 'نشط', 'إجراءات']}>
         {cats.map((c) => (
           <tr key={c.id} className="border-b border-gold/5">
             <td className="px-4 py-3">{c.name_en}</td>
@@ -80,7 +80,7 @@ export function Categories() {
                   c.is_active ? 'bg-emerald/15 text-emerald' : 'bg-red-100 text-red-600'
                 }`}
               >
-                {c.is_active ? 'Active' : 'Disabled'}
+                {c.is_active ? 'نشط' : 'معطل'}
               </button>
             </td>
             <td className="px-4 py-3">
@@ -101,13 +101,10 @@ export function Categories() {
                   onClick={() => setEditing(c)}
                   className="rounded px-2 text-emerald hover:bg-emerald/5"
                 >
-                  Edit
+                  تعديل
                 </button>
-                <button
-                  onClick={() => setDeleting(c)}
-                  className="rounded px-2 text-red-600 hover:bg-red-50"
-                >
-                  Delete
+                <button onClick={() => setDeleting(c)} className="rounded px-2 text-red-600 hover:bg-red-50">
+                  حذف
                 </button>
               </div>
             </td>
@@ -115,53 +112,22 @@ export function Categories() {
         ))}
       </Table>
 
-      <Modal
-        open={!!editing}
-        onClose={() => setEditing(null)}
-        title={editing?.id ? 'Edit Category' : 'New Category'}
-      >
+      <Modal open={!!editing} onClose={() => setEditing(null)} title={editing?.id ? 'تعديل الفئة' : 'فئة جديدة'}>
         <div className="space-y-3">
-          <Input
-            placeholder="Name (English)"
-            value={editing?.name_en || ''}
-            onChange={(e) => setEditing({ ...editing, name_en: e.target.value })}
-          />
-          <Input
-            placeholder="Name (Arabic)"
-            value={editing?.name_ar || ''}
-            onChange={(e) => setEditing({ ...editing, name_ar: e.target.value })}
-          />
-          <Input
-            type="number"
-            placeholder="Display order"
-            value={editing?.display_order ?? 0}
-            onChange={(e) =>
-              setEditing({ ...editing, display_order: Number(e.target.value) })
-            }
-          />
+          <Input placeholder="الاسم (إنجليزي)" value={editing?.name_en || ''} onChange={(e) => setEditing({ ...editing, name_en: e.target.value })} />
+          <Input placeholder="الاسم (عربي)" value={editing?.name_ar || ''} onChange={(e) => setEditing({ ...editing, name_ar: e.target.value })} />
+          <Input type="number" placeholder="الترتيب" value={editing?.display_order ?? 0} onChange={(e) => setEditing({ ...editing, display_order: Number(e.target.value) })} />
           <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={!!editing?.is_active}
-              onChange={(e) => setEditing({ ...editing, is_active: e.target.checked })}
-            />
-            Active
+            <input type="checkbox" checked={!!editing?.is_active} onChange={(e) => setEditing({ ...editing, is_active: e.target.checked })} />
+            نشط
           </label>
-          <Button onClick={save}>{editing?.id ? 'Save' : 'Create'}</Button>
+          <Button onClick={save}>{editing?.id ? 'حفظ' : 'إنشاء'}</Button>
         </div>
       </Modal>
 
-      <Modal
-        open={!!deleting}
-        onClose={() => setDeleting(null)}
-        title="Delete Category"
-      >
-        <p className="mb-4 text-sm text-ink/80">
-          Delete "{deleting?.name_en}"? All items in it will be removed.
-        </p>
-        <Button variant="danger" onClick={remove}>
-          Delete
-        </Button>
+      <Modal open={!!deleting} onClose={() => setDeleting(null)} title="حذف الفئة">
+        <p className="mb-4 text-sm text-ink/80">حذف "{deleting?.name_en}"؟ سيتم حذف جميع الأصناف فيها.</p>
+        <Button variant="danger" onClick={remove}>حذف</Button>
       </Modal>
     </div>
   );

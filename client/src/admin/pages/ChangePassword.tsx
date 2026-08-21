@@ -27,31 +27,14 @@ export function ChangePassword() {
   };
 
   return (
-    <div className="max-w-sm">
-      <h1 className="mb-6 text-2xl font-bold text-emerald">Change Password</h1>
-      <form onSubmit={submit} className="space-y-3 rounded-2xl bg-white p-6 shadow-sm">
-        <Input
-          type="password"
-          placeholder="Current password"
-          value={current}
-          onChange={(e) => setCurrent(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="New password"
-          value={next}
-          onChange={(e) => setNext(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-        />
-        {msg && (
-          <p className={`text-sm ${msg.ok ? 'text-emerald' : 'text-red-600'}`}>{msg.text}</p>
-        )}
-        <Button type="submit">Update Password</Button>
+    <div dir="rtl" className="max-w-sm">
+      <h1 className="mb-6 text-2xl font-bold text-emerald">تغيير كلمة المرور</h1>
+      <form onSubmit={submit} className="space-y-3 rounded-2xl bg-white p-6 shadow-sm border border-gold/10">
+        <Input type="password" placeholder="كلمة المرور الحالية" value={current} onChange={(e) => setCurrent(e.target.value)} />
+        <Input type="password" placeholder="كلمة المرور الجديدة" value={next} onChange={(e) => setNext(e.target.value)} />
+        <Input type="password" placeholder="تأكيد كلمة المرور" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
+        {msg && <p className={`text-sm ${msg.ok ? 'text-emerald' : 'text-red-600'}`}>{msg.text}</p>}
+        <Button type="submit">تحديث كلمة المرور</Button>
       </form>
     </div>
   );

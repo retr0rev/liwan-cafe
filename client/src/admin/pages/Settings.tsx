@@ -4,22 +4,21 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 
 const FIELDS: { key: string; label: string }[] = [
-  { key: 'restaurant_name_en', label: 'Restaurant Name (EN)' },
-  { key: 'restaurant_name_ar', label: 'Restaurant Name (AR)' },
-  { key: 'description_en', label: 'Description (EN)' },
-  { key: 'description_ar', label: 'Description (AR)' },
-  { key: 'hours_en', label: 'Hours (EN)' },
-  { key: 'hours_ar', label: 'Hours (AR)' },
-  { key: 'phone', label: 'Phone' },
-  { key: 'whatsapp', label: 'WhatsApp (legacy)' },
-  { key: 'whatsapp_number', label: 'WhatsApp Number (for orders, e.g. 9639xxxxxxx)' },
-  { key: 'instagram', label: 'Instagram URL' },
-  { key: 'facebook', label: 'Facebook URL' },
-  { key: 'tiktok', label: 'TikTok URL' },
-  { key: 'maps_url', label: 'Google Maps URL' },
-  { key: 'address_en', label: 'Address (EN)' },
-  { key: 'address_ar', label: 'Address (AR)' },
-  { key: 'footer_text', label: 'Footer Text' },
+  { key: 'restaurant_name_ar', label: 'اسم المطعم (عربي)' },
+  { key: 'restaurant_name_en', label: 'اسم المطعم (إنجليزي)' },
+  { key: 'description_ar', label: 'الوصف (عربي)' },
+  { key: 'description_en', label: 'الوصف (إنجليزي)' },
+  { key: 'hours_ar', label: 'ساعات العمل (عربي)' },
+  { key: 'hours_en', label: 'ساعات العمل (إنجليزي)' },
+  { key: 'phone', label: 'الهاتف' },
+  { key: 'whatsapp_number', label: 'رقم واتساب للطلبات (9639...)' },
+  { key: 'instagram', label: 'إنستغرام' },
+  { key: 'facebook', label: 'فيسبوك' },
+  { key: 'tiktok', label: 'تيك توك' },
+  { key: 'maps_url', label: 'رابط خرائط جوجل' },
+  { key: 'address_ar', label: 'العنوان (عربي)' },
+  { key: 'address_en', label: 'العنوان (إنجليزي)' },
+  { key: 'footer_text', label: 'نص الفوتر' },
 ];
 
 const IMAGES: { key: 'logo_url' | 'favicon_url'; label: string }[] = [
@@ -49,9 +48,9 @@ export function Settings() {
   };
 
   return (
-    <div className="max-w-2xl">
-      <h1 className="mb-6 text-2xl font-bold text-emerald">Restaurant Settings</h1>
-      <div className="space-y-3 rounded-2xl bg-white p-6 shadow-sm">
+    <div dir="rtl" className="max-w-2xl">
+      <h1 className="mb-6 text-2xl font-bold text-emerald">إعدادات المطعم</h1>
+      <div className="space-y-3 rounded-2xl bg-white p-6 shadow-sm border border-gold/10">
         <div className="grid gap-6 sm:grid-cols-2">
           {IMAGES.map((img) => (
             <div key={img.key}>
@@ -85,8 +84,8 @@ export function Settings() {
           </div>
         ))}
         <div className="flex items-center gap-3">
-          <Button onClick={save}>Save Settings</Button>
-          {saved && <span className="text-sm text-emerald">Saved</span>}
+          <Button onClick={save}>حفظ الإعدادات</Button>
+          {saved && <span className="text-sm text-emerald">تم الحفظ</span>}
         </div>
       </div>
     </div>

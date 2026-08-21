@@ -25,6 +25,7 @@ interface Item {
 interface Cat {
   id: number;
   name_en: string;
+  name_ar: string;
 }
 
 export function Items() {
@@ -93,13 +94,13 @@ export function Items() {
   const catName = (id: number) => cats.find((c) => c.id === id)?.name_en || '—';
 
   return (
-    <div>
+    <div dir="rtl">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-emerald">Menu Items</h1>
-        <Button onClick={() => setEditing({})}>Add Item</Button>
+        <h1 className="text-2xl font-bold text-emerald">الأصناف</h1>
+        <Button onClick={() => setEditing({})}>إضافة صنف</Button>
       </div>
 
-      <Table headers={['Name', 'Category', 'Price', 'Status', 'Flags', 'Actions']}>
+      <Table headers={['الاسم', 'الفئة', 'السعر', 'الحالة', 'علامات', 'إجراءات']}>
         {items.map((i) => (
           <tr key={i.id} className="border-b border-gold/5">
             <td className="px-4 py-3">
@@ -119,7 +120,7 @@ export function Items() {
                   i.is_available ? 'bg-emerald/15 text-emerald' : 'bg-red-100 text-red-600'
                 }`}
               >
-                {i.is_available ? 'Available' : 'Unavailable'}
+                {i.is_available ? 'متوفر' : 'غير متوفر'}
               </button>
             </td>
             <td className="px-4 py-3">
@@ -140,10 +141,10 @@ export function Items() {
             <td className="px-4 py-3">
               <div className="flex gap-1">
                 <button onClick={() => setEditing(i)} className="rounded px-2 text-emerald hover:bg-emerald/5">
-                  Edit
+                  تعديل
                 </button>
                 <button onClick={() => setDeleting(i)} className="rounded px-2 text-red-600 hover:bg-red-50">
-                  Delete
+                  حذف
                 </button>
               </div>
             </td>
@@ -151,57 +152,22 @@ export function Items() {
         ))}
       </Table>
 
-      <Modal
-        open={!!editing}
-        onClose={() => setEditing(null)}
-        title={editing?.id ? 'Edit Item' : 'New Item'}
-      >
+      <Modal open={!!editing} onClose={() => setEditing(null)} title={editing?.id ? 'تعديل الصنف' : 'صنف جديد'}>
         <div className="space-y-3">
-          <select
-            value={editing?.category_id || ''}
-            onChange={(e) => setEditing({ ...editing, category_id: Number(e.target.value) })}
-            className="w-full rounded-lg border border-gold/15 bg-white px-3 py-2 text-sm"
-          >
-            <option value="">Category</option>
+          <select value={editing?.category_id || ''} onChange={(e) => setEditing({ ...editing, category_id: Number(e.target.value) })} className="w-full rounded-lg border border-gold/15 bg-white px-3 py-2 text-sm">
+            <option value="">الفئة</option>
             {cats.map((c) => (
               <option key={c.id} value={c.id}>
-                {c.name_en}
+                {c.name_ar || c.name_en}
               </option>
             ))}
           </select>
-          <Input
-            placeholder="Name (English)"
-            value={editing?.name_en || ''}
-            onChange={(e) => setEditing({ ...editing, name_en: e.target.value })}
-          />
-          <Input
-            placeholder="Name (Arabic)"
-            value={editing?.name_ar || ''}
-            onChange={(e) => setEditing({ ...editing, name_ar: e.target.value })}
-          />
-          <Input
-            placeholder="Description (English)"
-            value={editing?.description_en || ''}
-            onChange={(e) => setEditing({ ...editing, description_en: e.target.value })}
-          />
-          <Input
-            placeholder="Description (Arabic)"
-            value={editing?.description_ar || ''}
-            onChange={(e) => setEditing({ ...editing, description_ar: e.target.value })}
-          />
-          <Input
-            type="number"
-            step="0.01"
-            placeholder="Price"
-            value={editing?.price ?? ''}
-            onChange={(e) => setEditing({ ...editing, price: Number(e.target.value) })}
-          />
-          <Input
-            type="number"
-            placeholder="Display order"
-            value={editing?.display_order ?? 0}
-            onChange={(e) => setEditing({ ...editing, display_order: Number(e.target.value) })}
-          />
+          <Input placeholder="الاسم (إنجليزي)" value={editing?.name_en || ''} onChange={(e) => setEditing({ ...editing, name_en: e.target.value })} />
+          <Input placeholder="الاسم (عربي)" value={editing?.name_ar || ''} onChange={(e) => setEditing({ ...editing, name_ar: e.target.value })} />
+          <Input placeholder="الوصف (إنجليزي)" value={editing?.description_en || ''} onChange={(e) => setEditing({ ...editing, description_en: e.target.value })} />
+          <Input placeholder="الوصف (عربي)" value={editing?.description_ar || ''} onChange={(e) => setEditing({ ...editing, description_ar: e.target.value })} />
+          <Input type="number" step="0.01" placeholder="السعر (ل.س)" value={editing?.price ?? ''} onChange={(e) => setEditing({ ...editing, price: Number(e.target.value) })} />
+          <Input type="number" placeholder="الترتيب" value={editing?.display_order ?? 0} onChange={(e) => setEditing({ ...editing, display_order: Number(e.target.value) })} />
           <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} />
           {editing?.image_url && (
             <img src={editing.image_url} className="h-16 w-16 rounded object-cover" alt="" />
@@ -226,15 +192,13 @@ export function Items() {
               </label>
             ))}
           </div>
-          <Button onClick={save}>{editing?.id ? 'Save' : 'Create'}</Button>
+          <Button onClick={save}>{editing?.id ? 'حفظ' : 'إنشاء'}</Button>
         </div>
       </Modal>
 
-      <Modal open={!!deleting} onClose={() => setDeleting(null)} title="Delete Item">
-        <p className="mb-4 text-sm text-ink/80">Delete "{deleting?.name_en}"?</p>
-        <Button variant="danger" onClick={remove}>
-          Delete
-        </Button>
+      <Modal open={!!deleting} onClose={() => setDeleting(null)} title="حذف الصنف">
+        <p className="mb-4 text-sm text-ink/80">حذف "{deleting?.name_ar || deleting?.name_en}"؟</p>
+        <Button variant="danger" onClick={remove}>حذف</Button>
       </Modal>
     </div>
   );
